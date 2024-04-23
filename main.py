@@ -73,7 +73,7 @@ def center_window(window, width, height):
     window.geometry(f"{width}x{height}+{x}+{y}")
 
 def createLabel(config, textBold=False):
-    label = Label(config.master, text=config.text, fg="white", bg="#333333")
+    label = Label(config.master, text=config.text, fg="#ffcc00", bg="#000000")
     if config.font:
         label_font = tkFont.Font(family=config.font, size=14)  
         if textBold:
@@ -82,7 +82,7 @@ def createLabel(config, textBold=False):
     return label
 
 def createEntry(config):
-    entry = Entry(config.master, width=config.width, bg="white")
+    entry = Entry(config.master, width=config.width, bg="#000000", fg="#ffcc00")
     if config.font:
         entry_font = tkFont.Font(family=config.font, size=14)  
         entry.config(font=entry_font)
@@ -93,18 +93,32 @@ def createEntry(config):
 def clearEntry(event):
     event.widget.delete(0, 'end')  
 
-def getUsername():
-    username = entry.get()
-    if username:
-        insert_name(username)
-        url = f"https://api.github.com/users/{username}/repos"
+def getAllRepositories(username):
+    all_repositories = []
+    page = 1
+
+    while True:
+        url = f"https://api.github.com/users/{username}/repos?page={page}&per_page=100"
         response = requests.get(url)
         if response.status_code == 200:
             repositories = response.json()
-            showRepositories(repositories)
+            if len(repositories) == 0:
+                break  
+            all_repositories.extend(repositories)
+            page += 1
         else:
             print(f"Error: {response.status_code}")
-            simpledialog.messagebox.showinfo("Error", f"User '{username}' not found.")
+            break
+    return all_repositories
+
+def getUsername():
+    username = entry.get()
+    if username:
+        repositories = getAllRepositories(username)
+        if repositories:
+            showRepositories(repositories)
+        else:
+            print(f"No repositories found for user '{username}'")
 
 def showRepositories(repositories):
     for repo in repositories:
@@ -199,6 +213,9 @@ def main():
     configuration_window(window, config)
     center_window(window, width, height)
 
+    # Background
+    window.configure(bg="#000000")
+
     # Imagem
     image = Image.open("github.png")  
     width, height = 40, 40
@@ -206,42 +223,42 @@ def main():
 
     tk_image = ImageTk.PhotoImage(resized_image)
 
-    image_label = Label(window, image=tk_image)
+    image_label = Label(window, image=tk_image, bg="#000000")
     image_label.place(x=755, y=1)
 
     # Título e entrada de usuário
-    config_title_label = ConfigurationLabel(window, "Repositories", font="Arial") 
+    config_title_label = ConfigurationLabel(window, "Repositories", font="Fixedsys") 
     titleLabel = createLabel(config_title_label, textBold=True)
     titleLabel.place(x=350, y=50)
 
-    config_entry = ConfigurationEntry(window, width=25, font="Arial", default_text="Username here", height=22)  
+    config_entry = ConfigurationEntry(window, width=25, font="Fixedsys", default_text="Username here", height=22)  
     entry = createEntry(config_entry)
     entry.bind("<FocusIn>", clearEntry)  
     entry.place(x=200, y=101)
 
     image_label.bind("<Button-1>", open_github)
     # Botões
-    config_button = ConfigurationButton(window, "Search", command=lambda: window.after(100, getUsername), font="Arial 17")  
+    config_button = ConfigurationButton(window, "Search", command=lambda: window.after(100, getUsername), font="Fixedsys")  
     button = ttk.Button(config_button.master, text=config_button.text, command=config_button.command)
-    button.place(x=550, y=100)
+    button.place(x=420, y=100)
 
-    refresh_button = ConfigurationButton(window, "Refresh", command=lambda: window.after(100, refreshTable), font="Arial")
+    refresh_button = ConfigurationButton(window, "Refresh", command=lambda: window.after(100, refreshTable), font="Fixedsys")
     button_refresh = ttk.Button(refresh_button.master, text=refresh_button.text, command=refresh_button.command)
     button_refresh.place(x=710, y=190)
     
-    clear_button = ConfigurationButton(window, "Clear Recents", command=lambda: window.after(100, clearRecentUsers), font="Arial")
+    clear_button = ConfigurationButton(window, "Clear Recents", command=lambda: window.after(100, clearRecentUsers), font="Fixedsys")
     clear_refresh = ttk.Button(clear_button.master, text=clear_button.text, command=clear_button.command)
     clear_refresh.place(x=710, y=270)
 
-    cloning_button = ConfigurationButton(window, "Cloning", command=lambda: window.after(100, cloningRepositories), font="Arial")
+    cloning_button = ConfigurationButton(window, "Cloning", command=lambda: window.after(100, cloningRepositories), font="Fixedsys")
     cloning_refresh = ttk.Button(cloning_button.master, text=cloning_button.text, command=cloning_button.command)
     cloning_refresh.place(x=710, y=230)
 
     # Lista de usuários recentes
-    last_users_frame = ttk.LabelFrame(window, text="Last Searched Users")
+    last_users_frame = ttk.LabelFrame(window, text="Last Searched Users", style="Retro.TLabelframe")
     last_users_frame.place(x=10, y=10, width=150, height=100)
 
-    last_users_listbox = Listbox(last_users_frame, font=('Arial', 11), selectmode="single", borderwidth=0, border=None, bg="#f0f0f0")
+    last_users_listbox = Listbox(last_users_frame, font=('Fixedsys', 11), selectmode="single", borderwidth=0, border=None, bg="#333333", fg="#ffcc00")
     last_users_listbox.pack(fill="both", expand=True)
 
     last_users = get_last_users(5)
@@ -252,26 +269,25 @@ def main():
         last_users_listbox.insert("end", "No users found.")  
 
     # Tabela de repositórios
-    tree = ttk.Treeview(window, columns=("Repositories",), show="headings", height=20) 
+    tree = ttk.Treeview(window, columns=("Repositories",), show="headings", height=20, style="Retro.Treeview") 
     tree.heading("#1", text="Repositories")
     tree.column("#1", width=600)  
     tree.place(x=100, y=150)  
 
     # Estilo
     style = ttk.Style(window)
-    style.configure("Treeview", font=('Arial', 12), background="#ffffff", foreground="#333333")  
-    style.configure("Treeview.Heading", font=('Arial', 14, 'bold'), background="#eeeeee", foreground="#333333") 
-    style.layout("Treeview", [('Treeview.treearea', {'sticky': 'nswe'})])  
+    style.configure("Retro.Treeview", font=('Fixedsys', 12), background="#333333", foreground="#ffcc00")  
+    style.configure("Retro.Treeview.Heading", font=('Fixedsys', 14, 'bold'), background="#333333", foreground="#ffcc00") 
+    style.layout("Retro.Treeview", [('Retro.Treeview.treearea', {'sticky': 'nswe'})])  
 
-    tree.tag_configure("button", foreground="blue", font=("Arial", 10, "underline"))
+    tree.tag_configure("button", foreground="#00ffff", font=("Fixedsys", 10, "underline"))
     tree.tag_bind("button", "<Button-1>", on_btn_click)
 
-    style.configure("Custom.TButton", background="#007bff", foreground="black", padding=10)
-    style.map("Custom.TButton", background=[("active", "#0056b3")])
+    style.configure("Retro.TButton", background="#ffcc00", foreground="#000000", padding=10)
+    style.map("Retro.TButton", background=[("active", "#ffff00")])
 
-    button.configure(style="Custom.TButton")
+    button.configure(style="Retro.TButton")
     last_users_listbox.bind("<Double-Button-1>", on_listbox_double_click)
-    window.configure(bg="#f0f0f0")
     
     
     window.mainloop()

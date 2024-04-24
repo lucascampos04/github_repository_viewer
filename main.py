@@ -242,7 +242,6 @@ def restore_default_text_username_repo(event):
     if not entry.get():
         entry.insert(0, "Search Repositorie")
 
-
 def main():
     global entry, tree, last_users_listbox, entrySearchRepositorie, button_refresh, error_label
 

@@ -25,11 +25,10 @@ def insert_name(username):
 def get_last_users(num_users):
     conn = sqlite3.connect('user_data.db')
     c = conn.cursor()
-    c.execute("SELECT username FROM users ORDER BY ROWID DESC LIMIT ?", (num_users,))
+    c.execute("SELECT DISTINCT username FROM users ORDER BY ROWID DESC LIMIT ?", (num_users,))
     last_users = [row[0] for row in c.fetchall()]
     conn.close()
-    return last_users  
-
+    return last_users
 class ConfigurationWindow: 
     def __init__ (self, title, resizable, width, height):
         self.title = title
@@ -94,6 +93,7 @@ def clearEntry(event):
     event.widget.delete(0, 'end')  
 
 def getAllRepositories(username):
+    global all_repositories
     all_repositories = []
     page = 1
 
@@ -109,20 +109,34 @@ def getAllRepositories(username):
         else:
             print(f"Error: {response.status_code}")
             break
+
     return all_repositories
 
 def getUsername():
+    global username
+
     username = entry.get()
     if username:
+        if username not in last_users_listbox.get(0, 'end'):
+            insert_name(username)
+            last_users_listbox.insert("end", username)
+        
         repositories = getAllRepositories(username)
         if repositories:
             showRepositories(repositories)
+            error_label.config(text="")
         else:
-            print(f"No repositories found for user '{username}'")
+            error_label.config(text=f"No repositories found for user '{username}'")
+            print(f"No repositories found for user '{username}'")     
+    else:
+        error_label.config(text="Please enter a username.")        
 
 def showRepositories(repositories):
     for repo in repositories:
-        tree.insert('', 'end', values=(repo["name"], "Go to Repo"), tags=("button",))
+        if repo["name"]:
+            tree.insert('', 'end', values=(repo["name"], "Go to Repo"), tags=("button",))
+    if not repositories:
+        messagebox.showerror("Warning", "No repositories found for this user.")        
 
 def on_btn_click(event):
     if tree.selection():
@@ -144,7 +158,6 @@ def refreshRecentUsers():
     else:
         last_users_listbox.insert("end", "No users found.")
 
-    
 def refreshTable():
     entry.delete(0, 'end')
 
@@ -198,16 +211,45 @@ def clearRecentUsers():
     conn.commit()
     conn.close()
 
+def filterRepositories(event):
+    global all_repositories
+
+    query = entrySearchRepositorie.get().lower()
+
+    for item in tree.get_children():
+        tree.delete(item)
+
+    found = False
+    for repo in all_repositories:
+        if repo["name"].lower().startswith(query):
+            tree.insert('', 'end', values=(repo["name"], "Go to Repo"), tags=("button",)) 
+            found= True
+
+        if not found:
+            error_label.config(text="No repositories found for this user.")
+            error_label.place(x=200, y=130)     
+        else:
+            error_label.config(text="")           
+
 def open_github(event):
-    webbrowser.open("https://github.com/lucascampos04")
+    webbrowser.open("https://github.com/lucascampos04")   
+
+def restore_default_text_username(event):
+    if not entry.get():
+        entry.insert(0, "Username here")
+
+def restore_default_text_username_repo(event):
+    if not entry.get():
+        entry.insert(0, "Search Repositorie")
+
 
 def main():
-    global entry, tree, last_users_listbox
+    global entry, tree, last_users_listbox, entrySearchRepositorie, button_refresh, error_label
 
     width = 800
     height = 600 
 
-    config = ConfigurationWindow("My Window", (False, False), width, height)
+    config = ConfigurationWindow("Github", (False, False), width, height)
 
     window = Tk()
     configuration_window(window, config)
@@ -229,18 +271,26 @@ def main():
     # Título e entrada de usuário
     config_title_label = ConfigurationLabel(window, "Repositories", font="Fixedsys") 
     titleLabel = createLabel(config_title_label, textBold=True)
-    titleLabel.place(x=350, y=50)
+    titleLabel.place(x=350, y=20)
 
     config_entry = ConfigurationEntry(window, width=25, font="Fixedsys", default_text="Username here", height=22)  
     entry = createEntry(config_entry)
+    entry.bind("<FocusOut>", restore_default_text_username)
     entry.bind("<FocusIn>", clearEntry)  
-    entry.place(x=200, y=101)
+    entry.place(x=200, y=70)
+
+    config_search_repositorie = ConfigurationEntry(window, width=25, font="Fixedsys", default_text="Search Repositorie", height=22)
+    entrySearchRepositorie = createEntry(config_search_repositorie)
+    entrySearchRepositorie.bind("<FocusIn>", clearEntry)
+    entrySearchRepositorie.bind("<FocusOut>", restore_default_text_username_repo)
+    entrySearchRepositorie.bind("<KeyRelease>", filterRepositories)
+    entrySearchRepositorie.place(x = 200, y= 100)
 
     image_label.bind("<Button-1>", open_github)
     # Botões
     config_button = ConfigurationButton(window, "Search", command=lambda: window.after(100, getUsername), font="Fixedsys")  
     button = ttk.Button(config_button.master, text=config_button.text, command=config_button.command)
-    button.place(x=420, y=100)
+    button.place(x=420, y=75)
 
     refresh_button = ConfigurationButton(window, "Refresh", command=lambda: window.after(100, refreshTable), font="Fixedsys")
     button_refresh = ttk.Button(refresh_button.master, text=refresh_button.text, command=refresh_button.command)
@@ -268,6 +318,7 @@ def main():
     else:
         last_users_listbox.insert("end", "No users found.")  
 
+    
     # Tabela de repositórios
     tree = ttk.Treeview(window, columns=("Repositories",), show="headings", height=20, style="Retro.Treeview") 
     tree.heading("#1", text="Repositories")
@@ -288,7 +339,10 @@ def main():
 
     button.configure(style="Retro.TButton")
     last_users_listbox.bind("<Double-Button-1>", on_listbox_double_click)
-    
+
+    # Label para exibir mensagens de erro
+    error_label = Label(window, text="", fg="red", font=("Fixedsys", 12), bg="#333333")
+    error_label.place(x=200, y=300) 
     
     window.mainloop()
 main()

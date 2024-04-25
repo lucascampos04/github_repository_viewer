@@ -24,7 +24,6 @@ if __name__ == "__main__":
     else:
         print("All required packages already installed")    
 
-
 from tkinter import Listbox, Tk, Label, Entry, font as tkFont, messagebox, simpledialog
 import requests
 import webbrowser
@@ -32,7 +31,6 @@ from tkinter import ttk
 import os
 import sqlite3
 from PIL import Image, ImageTk
-
 
 def createTable():
     conn = sqlite3.connect('user_data.db')

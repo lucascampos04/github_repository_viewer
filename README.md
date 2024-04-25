@@ -1,5 +1,4 @@
 <div align="center" id="top"> 
-  <img src="./.github/app.gif" alt="Visualizador_de_Repositórios_do_GitHub" />
 
   &#xa0;
 

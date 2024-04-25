@@ -1,3 +1,5 @@
+<img src="./ImgS.png" height="500px" width="1000px">
+
 <div align="center" id="top"> 
 
   &#xa0;
@@ -41,7 +43,7 @@ $ cd github_repository_viewer
 $ python .\main.py
 
 ```
-:memo: Licença
+Licença
 Este projeto está sob licença MIT. Para mais detalhes, consulte o arquivo LICENSE.
 
 Feito por <a href="https://github.com/lucascampos04" target="_blank">Lucas Oliveira Campos</a>

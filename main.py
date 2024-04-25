@@ -1,11 +1,38 @@
+import subprocess
+import sys
+
+def install_package(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+def check_dependencies():
+    required_packages = ["requests", "Pillow"]
+    missing_packages = []
+    for package in required_packages:
+        try:
+            __import__(package)
+        except ImportError:
+            print(f"{package} is not installed. Installing...")
+            install_package(package)
+            missing_packages.append(package)
+    return missing_packages
+
+if __name__ == "__main__":
+    missing_packages =  check_dependencies()
+
+    if missing_packages:
+        print("Required packages installed successfully")
+    else:
+        print("All required packages already installed")    
+
+
 from tkinter import Listbox, Tk, Label, Entry, font as tkFont, messagebox, simpledialog
 import requests
 import webbrowser
 from tkinter import ttk
 import os
-import subprocess
 import sqlite3
 from PIL import Image, ImageTk
+
 
 def createTable():
     conn = sqlite3.connect('user_data.db')
@@ -29,6 +56,7 @@ def get_last_users(num_users):
     last_users = [row[0] for row in c.fetchall()]
     conn.close()
     return last_users
+
 class ConfigurationWindow: 
     def __init__ (self, title, resizable, width, height):
         self.title = title

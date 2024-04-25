@@ -13,15 +13,6 @@
 
 <hr> -->
 
-<p align="center">
-  <a href="#dart-sobre">Sobre</a> &#xa0; | &#xa0; 
-  <a href="#sparkles-recursos">Recursos</a> &#xa0; | &#xa0;
-  <a href="#rocket-tecnologias">Tecnologias</a> &#xa0; | &#xa0;
-  <a href="#white_check_mark-requisitos">Requisitos</a> &#xa0; | &#xa0;
-  <a href="#checkered_flag-começando">Começando</a> &#xa0; | &#xa0;
-  <a href="#memo-licença">Licença</a> &#xa0; | &#xa0;
-  <a href="https://github.com/{{SEU_NOME_DE_USUÁRIO_NO_GITHUB}}" target="_blank">Autor</a>
-</p>
 
 <br>
 
@@ -50,11 +41,8 @@ $ cd github_repository_viewer
 # Execute o projeto
 $ python .\main.py
 
-Licença
+```
+:memo: Licença
 Este projeto está sob licença MIT. Para mais detalhes, consulte o arquivo LICENSE.
 
-Feito com :heart: por <a href="https://github.com/lucascampos04" target="_blank">Lucas Oliveira Campos</a>
-
- 
-
-<a href="#top">Voltar ao topo</a>
+Feito por <a href="https://github.com/lucascampos04" target="_blank">Lucas Oliveira Campos</a>

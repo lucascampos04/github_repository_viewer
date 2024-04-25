@@ -11,18 +11,12 @@ def check_dependencies():
         try:
             __import__(package)
         except ImportError:
-            print(f"{package} is not installed. Installing...")
             install_package(package)
             missing_packages.append(package)
     return missing_packages
 
 if __name__ == "__main__":
-    missing_packages =  check_dependencies()
-
-    if missing_packages:
-        print("Required packages installed successfully")
-    else:
-        print("All required packages already installed")    
+    check_dependencies()
 
 from tkinter import Listbox, Tk, Label, Entry, font as tkFont, messagebox, simpledialog
 import requests
@@ -119,7 +113,7 @@ def clearEntry(event):
     event.widget.delete(0, 'end')  
 
 def getAllRepositories(username):
-    global all_repositories
+    global all_repositories 
     all_repositories = []
     page = 1
 
@@ -133,7 +127,6 @@ def getAllRepositories(username):
             all_repositories.extend(repositories)
             page += 1
         else:
-            print(f"Error: {response.status_code}")
             break
 
     return all_repositories
@@ -153,7 +146,6 @@ def getUsername():
             error_label.config(text="")
         else:
             error_label.config(text=f"No repositories found for user '{username}'")
-            print(f"No repositories found for user '{username}'")     
     else:
         error_label.config(text="Please enter a username.")        
 
@@ -171,7 +163,6 @@ def on_btn_click(event):
         if messagebox.askyesno("Confirmation", f"Do you want to go to the repository '{repo_name}'?"):
             url = f"https://github.com/{entry.get()}/{repo_name}.git"
             webbrowser.open(url)
-            print(f"Opening repository '{repo_name}'")
     else:
         return
 
@@ -182,7 +173,7 @@ def refreshRecentUsers():
         for user in last_users:
             last_users_listbox.insert("end", user)
     else:
-        last_users_listbox.insert("end", "No users found.")
+        last_users_listbox.insert("end")
 
 def refreshTable():
     entry.delete(0, 'end')
@@ -197,8 +188,6 @@ def refreshTable():
         if response.status_code == 200:
             repositories = response.json()
             showRepositories(repositories)
-        else:
-            print(f"Error: {response.status_code}")
     refreshRecentUsers()             
 
 def cloningRepositories():
@@ -215,7 +204,6 @@ def cloningRepositories():
                 os.makedirs(destination_dir)
             
             subprocess.run(["git", "clone", git_url, destination_dir])
-            print(f"Cloning repository '{repo_name}' to {destination_dir}")
 
             os.startfile(destination_dir)
         else:
@@ -341,7 +329,7 @@ def main():
         for user in last_users:
             last_users_listbox.insert("end", user)
     else:
-        last_users_listbox.insert("end", "No users found.")  
+        last_users_listbox.insert("end")  
 
     
     # Tabela de repositórios

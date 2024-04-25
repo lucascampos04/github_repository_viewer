@@ -1,98 +1,60 @@
 <div align="center" id="top"> 
-  <img src="./.github/app.gif" alt="Github_repository_viewer" />
+  <img src="./.github/app.gif" alt="Visualizador_de_Repositórios_do_GitHub" />
 
   &#xa0;
 
   <!-- <a href="https://github_repository_viewer.netlify.app">Demo</a> -->
 </div>
 
-<h1 align="center">Github_repository_viewer</h1>
-
-<p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/{{YOUR_GITHUB_USERNAME}}/github_repository_viewer?color=56BEB8">
-
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/{{YOUR_GITHUB_USERNAME}}/github_repository_viewer?color=56BEB8">
-
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/{{YOUR_GITHUB_USERNAME}}/github_repository_viewer?color=56BEB8">
-
-  <img alt="License" src="https://img.shields.io/github/license/{{YOUR_GITHUB_USERNAME}}/github_repository_viewer?color=56BEB8">
-
-  <!-- <img alt="Github issues" src="https://img.shields.io/github/issues/{{YOUR_GITHUB_USERNAME}}/github_repository_viewer?color=56BEB8" /> -->
-
-  <!-- <img alt="Github forks" src="https://img.shields.io/github/forks/{{YOUR_GITHUB_USERNAME}}/github_repository_viewer?color=56BEB8" /> -->
-
-  <!-- <img alt="Github stars" src="https://img.shields.io/github/stars/{{YOUR_GITHUB_USERNAME}}/github_repository_viewer?color=56BEB8" /> -->
-</p>
-
-<!-- Status -->
-
+<h1 align="center">Visualizador de Repositórios do GitHub</h1>
 <!-- <h4 align="center"> 
-	🚧  Github_repository_viewer 🚀 Under construction...  🚧
+	🚧  Visualizador_de_Repositórios_do_GitHub 🚀 Em construção...  🚧
 </h4> 
 
 <hr> -->
 
 <p align="center">
-  <a href="#dart-about">About</a> &#xa0; | &#xa0; 
-  <a href="#sparkles-features">Features</a> &#xa0; | &#xa0;
-  <a href="#rocket-technologies">Technologies</a> &#xa0; | &#xa0;
-  <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
-  <a href="#checkered_flag-starting">Starting</a> &#xa0; | &#xa0;
-  <a href="#memo-license">License</a> &#xa0; | &#xa0;
-  <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">Author</a>
+  <a href="#dart-sobre">Sobre</a> &#xa0; | &#xa0; 
+  <a href="#sparkles-recursos">Recursos</a> &#xa0; | &#xa0;
+  <a href="#rocket-tecnologias">Tecnologias</a> &#xa0; | &#xa0;
+  <a href="#white_check_mark-requisitos">Requisitos</a> &#xa0; | &#xa0;
+  <a href="#checkered_flag-começando">Começando</a> &#xa0; | &#xa0;
+  <a href="#memo-licença">Licença</a> &#xa0; | &#xa0;
+  <a href="https://github.com/{{SEU_NOME_DE_USUÁRIO_NO_GITHUB}}" target="_blank">Autor</a>
 </p>
 
 <br>
 
-## :dart: About ##
+## :dart: Sobre ##
+O Visualizador de Repositórios do GitHub é uma aplicação em Python que permite aos usuários buscar e interagir com repositórios hospedados no GitHub de forma fácil e intuitiva. Com esta aplicação, os usuários podem pesquisar repositórios por nome de usuário, visualizar uma lista dos usuários recentes, clonar repositórios para sua máquina local e abrir os repositórios em seus navegadores padrão.
 
-Describe your project
+## :rocket: Tecnologias ##
 
-## :sparkles: Features ##
+As seguintes ferramentas foram utilizadas neste projeto:
 
-:heavy_check_mark: Feature 1;\
-:heavy_check_mark: Feature 2;\
-:heavy_check_mark: Feature 3;
+- [Python](https://expo.org/)
 
-## :rocket: Technologies ##
+## :white_check_mark: Requisitos ##
 
-The following tools were used in this project:
+Antes de começar :checkered_flag:, você precisa ter o [Git](https://git-scm.com) e o [Python](https://python.org/) instalados.
 
-- [Expo](https://expo.io/)
-- [Node.js](https://nodejs.org/en/)
-- [React](https://pt-br.reactjs.org/)
-- [React Native](https://reactnative.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-
-## :white_check_mark: Requirements ##
-
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed.
-
-## :checkered_flag: Starting ##
+## :checkered_flag: Começando ##
 
 ```bash
-# Clone this project
-$ git clone https://github.com/{{YOUR_GITHUB_USERNAME}}/github_repository_viewer
+# Clone este projeto
+$ git clone https://github.com/lucascampos04/github_repository_viewer
 
-# Access
+# Acesse
 $ cd github_repository_viewer
 
-# Install dependencies
-$ yarn
+# Execute o projeto
+$ python .\main.py
 
-# Run the project
-$ yarn start
+Licença
+Este projeto está sob licença MIT. Para mais detalhes, consulte o arquivo LICENSE.
 
-# The server will initialize in the <http://localhost:3000>
-```
+Feito com :heart: por <a href="https://github.com/lucascampos04" target="_blank">Lucas Oliveira Campos</a>
 
-## :memo: License ##
+ 
 
-This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
-
-
-Made with :heart: by <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">{{YOUR_NAME}}</a>
-
-&#xa0;
-
-<a href="#top">Back to top</a>
+<a href="#top">Voltar ao topo</a>
